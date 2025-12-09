@@ -1,3 +1,395 @@
-<p>Hello 大家好</p>
-<p>我是leo，这是我的个人网站。 </p>
-<p>很高兴你来到这里, 你可以在以下的网站找到我</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicant Portal - UWC Bhutan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        uwcBlue: '#004C97',
+                        uwcTeal: '#009681',
+                        uwcDark: '#0f172a',
+                        uwcLight: '#f8fafc',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'],
+                        mono: ['Courier Prime', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700;900&family=Courier+Prime:wght@400;700&display=swap');
+
+        body {
+            background-color: #f1f5f9;
+        }
+
+        /* 纸张阴影 */
+        .shadow-paper {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 印章旋转与混合模式 */
+        .stamp-container {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            width: 180px;
+            height: 180px;
+            transform: rotate(-15deg);
+            opacity: 0.85;
+            mix-blend-mode: multiply;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* 彩带 Canvas */
+        #confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <canvas id="confetti"></canvas>
+
+    <!-- Navigation Bar -->
+    <nav class="bg-uwcBlue text-white shadow-lg z-40 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <!-- Fake Logo -->
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-uwcBlue font-bold text-xl border-2 border-uwcTeal">
+                            <i class="fa-solid fa-earth-asia"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-lg leading-tight">UWC Bhutan</span>
+                            <span class="text-[10px] uppercase tracking-wider text-blue-200">United World Colleges</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6 text-sm font-medium">
+                    <a href="#" class="hidden md:block hover:text-blue-200">Home</a>
+                    <a href="#" class="hidden md:block hover:text-blue-200">About UWC</a>
+                    <a href="#" class="hidden md:block hover:text-blue-200">Academics</a>
+                    <div class="flex items-center gap-2 bg-blue-800 px-3 py-1 rounded-full border border-blue-600">
+                        <i class="fa-solid fa-user-circle"></i>
+                        <span>ID</span>
+                    </div>
+                    <a href="#" class="text-blue-200 hover:text-white"><i class="fa-solid fa-right-from-bracket"></i></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sub-header / Breadcrumbs -->
+    <div class="bg-white border-b border-gray-200 shadow-sm z-30 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <div class="text-sm text-gray-500">
+                Admissions Portal <span class="mx-2">/</span> Applicant Status <span class="mx-2">/</span> <span class="text-uwcBlue font-semibold">Decision Letter</span>
+            </div>
+            <div class="text-xs font-bold text-uwcTeal uppercase tracking-widest animate-pulse">
+                ● Live Update
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full z-10 relative">
+        <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+            
+            <!-- Sidebar (Left) -->
+            <div class="hidden lg:block lg:col-span-3 space-y-6">
+                <!-- Profile Card -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
+                            <i class="fa-solid fa-user text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-900">ID</h3>
+                            <p class="text-xs text-gray-500">Applicant ID: 25-789</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-100 pt-4 space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Cycle</span>
+                            <span class="font-medium">2025 Entry</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Campus</span>
+                            <span class="font-medium">Changshu (Water)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Division</span>
+                            <span class="font-medium">Lacustrine</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Card -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-0 overflow-hidden">
+                    <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Application Checklist</h4>
+                    </div>
+                    <div class="divide-y divide-gray-100">
+                        <div class="px-4 py-3 flex items-center gap-3 text-sm text-gray-400">
+                            <i class="fa-solid fa-check-circle text-green-500"></i>
+                            <span class="line-through">Profile Review</span>
+                        </div>
+                        <div class="px-4 py-3 flex items-center gap-3 text-sm text-gray-400">
+                            <i class="fa-solid fa-check-circle text-green-500"></i>
+                            <span class="line-through">Psych Evaluation</span>
+                        </div>
+                        <div class="px-4 py-3 flex items-center gap-3 text-sm font-semibold text-uwcBlue bg-blue-50">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                            <span>View Decision</span>
+                        </div>
+                        <div class="px-4 py-3 flex items-center gap-3 text-sm text-gray-600">
+                            <i class="fa-regular fa-circle"></i>
+                            <span>Buy a Boat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Letter Column -->
+            <div class="lg:col-span-9">
+                <!-- Alert Banner -->
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 shadow-sm">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa-solid fa-circle-check text-green-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-green-700">
+                                <span class="font-bold">Status Update (08 Dec 2025):</span> Your application status has changed. Please review the official correspondence below.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- The Letter Paper -->
+                <div class="bg-white shadow-paper px-10 py-12 md:px-16 md:py-16 relative min-h-[800px]">
+                    
+                    <!-- Letter Header -->
+                    <div class="flex justify-between items-start border-b-2 border-uwcBlue pb-8 mb-8">
+                        <div>
+                            <h1 class="text-3xl font-serif font-black text-uwcBlue tracking-tight">UWC BHUTAN</h1>
+                            <div class="text-sm font-bold text-uwcTeal uppercase tracking-[0.2em] mt-1">Operations Command</div>
+                            <div class="text-[10px] text-gray-400 mt-1 font-mono">OFFICE OF ADMISSIONS & STRATEGIC LOGISTICS</div>
+                        </div>
+                        <div class="text-right hidden sm:block">
+                            <div class="w-16 h-16 bg-uwcBlue rounded-full flex items-center justify-center text-white text-2xl font-serif font-bold border-4 border-double border-white shadow-md">
+                                B
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Date & Ref -->
+                    <div class="flex justify-between text-sm font-mono text-gray-500 mb-10">
+                        <div>
+                            <p>DATE: 08 DECEMBER 2025</p>
+                            <p>REF: BHQ/ORD/25/789</p>
+                        </div>
+                        <div class="text-right">
+                            <p>TO: <span class="font-bold text-black bg-yellow-200 px-1">ID</span></p>
+                            <p>STATUS: <span class="font-bold text-red-600">MANDATORY</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Subject Line -->
+                    <div class="mb-8">
+                        <h2 class="font-sans font-bold text-lg text-center underline decoration-2 underline-offset-4 decoration-uwcBlue">
+                            OFFICIAL NOTIFICATION OF CONSCRIPTION: OPERATION "LITOST"
+                        </h2>
+                    </div>
+
+                    <!-- Letter Body -->
+                    <div class="font-serif text-gray-800 leading-relaxed space-y-5 text-[15px] text-justify">
+                        <p>
+                            This office hereby serves formal notice of your immediate and unconditional conscription into the <strong>UWC Bhutan 2025 Lacustrine Cohort</strong>, pursuant to the findings of the Committee for Unconventional Return Pathways. Your previous status as an independent civilian applicant is now rescinded.
+                        </p>
+                        <p>
+                            The standard terrestrial ingress protocol to the Changshu Island Campus (designated "The Bridge") has been classified as operationally obsolete and ideologically insufficient for the ceremonial recalibration required this cycle. Consequently, a primary amphibious vector across Kuncheng Lake has been authorized as the sole sanctioned method of return. <strong>This is not a proposal but an executed operational parameter.</strong>
+                        </p>
+                        <p>
+                            Your conscription is based on a mandatory audit of latent psychographic data, which identified a non-standard resilience to outcome-based calculus and a documented propensity for sustained engagement in low-probability scenarios. <span class="bg-blue-50 px-1 italic text-uwcBlue font-medium">This profile has been deemed a mission-critical asset for group cohesion during phases of high physical duress and logistical uncertainty.</span> Your function will be to provide invariant motivational output irrespective of environmental feedback, thereby ensuring the continuity of the operation beyond rational failure thresholds.
+                        </p>
+                        <p>
+                            Upon acknowledgment of this directive, you are ordered to commence mental and physical preparation for wet-environment deployment. All prior commitments are hereby subordinated to this priority operation. Failure to present at the designated embarkation point at the specified time will be recorded as a critical lapse in collective continuity, resulting in the permanent forfeiture of this curated re-entry experience. No further correspondence regarding the nature or necessity of this operation will be entertained.
+                        </p>
+                        <p class="font-sans text-xs text-gray-500 mt-8 pt-4 border-t border-gray-100">
+                            * The embarkation point and precise chrono-coordinates will be transmitted under separate cover.
+                        </p>
+                    </div>
+
+                    <!-- Signature Block -->
+                    <div class="mt-16 pt-8 relative">
+                        <p class="font-mono text-sm mb-4">SIGNED,</p>
+                        <!-- Signature Image Placeholder (Text for now) -->
+                        <div class="font-cursive text-2xl text-blue-900 mb-2 transform -rotate-2 ml-4 font-bold" style="font-family: 'Brush Script MT', cursive;">Commodore Acting</div>
+                        
+                        <div class="font-sans font-bold text-xs uppercase text-gray-900 tracking-wider">
+                            Office of the Provost Marshal<br>
+                            Lacustrine Division, UWC Bhutan
+                        </div>
+
+                        <!-- THE STAMP (SVG RECREATION) -->
+                        <div class="stamp-container">
+                            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Outer Rings -->
+                                <circle cx="100" cy="100" r="95" fill="none" stroke="#ef4444" stroke-width="4" />
+                                <circle cx="100" cy="100" r="90" fill="none" stroke="#ef4444" stroke-width="1" />
+                                
+                                <!-- Curved Text Top -->
+                                <path id="curveTop" fill="none" d="M 20,100 A 80,80 0 0,1 180,100" />
+                                <text width="200" fill="#ef4444" font-family="Arial, sans-serif" font-weight="bold" font-size="19" text-anchor="middle">
+                                    <textPath xlink:href="#curveTop" startOffset="50%">
+                                        西蒙脑袋行动计划有限公司
+                                    </textPath>
+                                </text>
+
+                                <!-- Curved Text Bottom (Numbers) -->
+                                <path id="curveBottom" fill="none" d="M 40,100 A 60,60 0 0,0 160,100" />
+                                <text width="200" fill="#ef4444" font-family="Courier New, monospace" font-weight="bold" font-size="16" text-anchor="middle" letter-spacing="2">
+                                    <textPath xlink:href="#curveBottom" startOffset="50%">
+                                        1234567890
+                                    </textPath>
+                                </text>
+
+                                <!-- Central Figure (The Funny Red Guy) -->
+                                <g transform="translate(65, 55) scale(0.35)">
+                                    <!-- Body -->
+                                    <path fill="#ef4444" d="M100 20 C 110 5, 120 5, 130 20 C 140 40, 160 80, 150 100 C 140 120, 170 110, 180 100 C 190 90, 200 100, 190 120 C 180 140, 150 160, 150 180 L 190 220 L 170 230 L 130 190 C 110 200, 90 200, 70 190 L 30 230 L 10 220 L 50 180 C 50 160, 20 140, 10 120 C 0 100, 10 90, 20 100 C 30 110, 60 120, 50 100 C 40 80, 60 40, 70 20 z" />
+                                    <!-- Face (White) -->
+                                    <ellipse cx="100" cy="70" rx="25" ry="30" fill="white" />
+                                    <!-- Eyes/Mouth (Red) -->
+                                    <circle cx="90" cy="65" r="3" fill="#ef4444" />
+                                    <circle cx="110" cy="65" r="3" fill="#ef4444" />
+                                    <path d="M 90 80 Q 100 90 110 80" stroke="#ef4444" stroke-width="2" fill="none" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-8 flex justify-center gap-4">
+                    <button class="bg-uwcBlue hover:bg-blue-800 text-white font-bold py-3 px-8 rounded shadow-lg transform transition hover:-translate-y-1 flex items-center gap-2">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        Download Conscription PDF
+                    </button>
+                    <button class="bg-white hover:bg-gray-50 text-gray-700 font-bold py-3 px-8 rounded border border-gray-300 shadow transform transition hover:-translate-y-1">
+                        Contact Command
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-uwcDark text-slate-400 py-8 mt-auto z-40 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-xs">
+                    &copy; 2025 UWC Bhutan Operations Command. All rights reserved.<br>
+                    <span class="text-slate-600">Unauthorized use of this portal may result in forced swimming lessons.</span>
+                </div>
+                <div class="flex space-x-6 text-xl">
+                    <i class="fa-brands fa-facebook hover:text-white cursor-pointer"></i>
+                    <i class="fa-brands fa-instagram hover:text-white cursor-pointer"></i>
+                    <i class="fa-brands fa-twitter hover:text-white cursor-pointer"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Confetti Engine (Simplified & Optimized)
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+
+        const particles = [];
+        // UWC Colors for confetti: Blue, Teal, Gold, White
+        const colors = ['#004C97', '#009681', '#F2A900', '#ffffff']; 
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height - height;
+                this.rotation = Math.random() * 360;
+                this.speed = Math.random() * 3 + 2;
+                this.rotationSpeed = Math.random() * 2 - 1;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.size = Math.random() * 8 + 4;
+            }
+
+            update() {
+                this.y += this.speed;
+                this.rotation += this.rotationSpeed;
+                // Add some sway
+                this.x += Math.sin(this.y * 0.05) * 0.5;
+
+                if (this.y > height) {
+                    this.y = -20;
+                    this.x = Math.random() * width;
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 0.6);
+                ctx.restore();
+            }
+        }
+
+        // Initialize particles
+        for (let i = 0; i < 150; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        });
+    </script>
+</body>
+</html>
